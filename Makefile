@@ -15,7 +15,7 @@
 #
 #   SRCS=main.c user.c \
 #        driver.s
-SRCS=rob.c scibuff.c fqd.c pwm.c tpu.c nav.c navutil.c cntr.c guid.c mzguid.c dist.c line.c draw.c a2d.c flame.c crt0x.s
+SRCS=rob.c scibuff.c fqd.c pwm.c tpu.c nav.c navutil.c cntr.c guid.c mzguid.c dist.c line.c draw.c a2d.c flame.c
 
 # Specify the CPU type that you are targeting your build towards.
 #
@@ -41,7 +41,8 @@ OBJCOPY=$(PREFIX)-objcopy
 OBJDUMP=$(PREFIX)-objdump
 
 CFLAGS=-m$(CPU) -Wall -Wextra -g -static -I../include -I. -msoft-float -MMD -MP -O
-LFLAGS=--script=platform.ld -L../libmetal -lmetal-$(CPU)
+LFLAGS=--script=platform.ld -L../m68k_bare_metal/libmetal -lmetal-$(CPU)
+#LFLAGS=--script=platform.ld
 
 OBJS=$(patsubst %.c,$(BUILDDIR)/%.c.o,$(SRCS))
 OBJS:=$(patsubst %.S,$(BUILDDIR)/%.S.o,$(OBJS))
@@ -50,7 +51,7 @@ DEPS=$(OBJS:.o=.d)
 
 .PHONY: bmbinary release all crt clean rom dump dumps hexdump
 
-bmbinary: $(OBJS)
+bmbinary: $(OBJS) crt0x.o
 	$(LD) -o $@ $(OBJS) $(LFLAGS)
 
 release: CFLAGS+= -DNDEBUG
@@ -73,11 +74,20 @@ $(BUILDDIR)/%.s.o: %.s
 
 -include $(DEPS)
 
+# Some linker scripts expect a startup object named crt0x.o in the current
+# directory (see platform.ld STARTUP(crt0x.o)). Build `build/crt0x.s.o` as
+# usual and make a copy at the repository root named `crt0x.o` so the linker
+# can find it.
+crt0x.o: crt0x.s
+	mkdir -p $(BUILDDIR)
+	$(CC) $(CFLAGS) -x assembler-with-cpp -c -o $(BUILDDIR)/crt0x.s.o crt0x.s
+	cp $(BUILDDIR)/crt0x.s.o $@
+
 all: bmbinary rom
 
-crt: crt0.S
-	$(CC) $(CFLAGS) -c -o crt0.o crt0.S
-	rm -f crt0.d
+crt: crt0x.s
+	$(CC) $(CFLAGS) -c -o crt0x.s.o crt0x.s
+	rm -f crt0x.d
 
 clean:
 	rm -rf $(BUILDDIR)/*

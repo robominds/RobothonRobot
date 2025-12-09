@@ -5,7 +5,8 @@ OUTPUT_ARCH(m68k)
 OUTPUT_FORMAT(srec)
  */
 SEARCH_DIR(.)
-GROUP(-lbcc -lc -lgcc)
+/*GROUP(-lmc332 -lc -lgcc)
+*/
 __DYNAMIC  =  0;
 
 /*
@@ -67,6 +68,7 @@ SECTIONS
     __INIT_SECTION__ = . ;
     LONG (0x0008ffff)
     LONG (0x00003000)
+    LONG (__vector_default)
   } > vbr
   
   .text :
