@@ -15,7 +15,7 @@
 #
 #   SRCS=main.c user.c \
 #        driver.s
-SRCS=rob.c
+SRCS=rob.c scibuff.c fqd.c pwm.c tpu.c nav.c navutil.c cntr.c guid.c mzguid.c dist.c line.c draw.c a2d.c flame.c crt0x.s
 
 # Specify the CPU type that you are targeting your build towards.
 #
@@ -69,7 +69,7 @@ $(BUILDDIR)/%.S.o: %.S
 
 $(BUILDDIR)/%.s.o: %.s
 	mkdir -p $(@D)
-	$(CC) $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) -x assembler-with-cpp -c -o $@ $<
 
 -include $(DEPS)
 
