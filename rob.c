@@ -2,16 +2,20 @@
 
 #include "mssndef.h"
 #include "asm.h"
-#include <stdio.h>
-#include "stdio.h"
 #include "stddef.h"
 #include "qsm_reg.h"
 #include "scibuff.h"
 #include "pwm.h"
+#include "tpu.h"
 #include "dist.h"
 #include "nav.h"
 #include "guid.h"
+#include "mzguid.h"
+#include "cntr.h"
+#include "line.h"
+#include "draw.h"
 #include "a2d.h"
+#include "stdio.h"
 
 void __vector_default(void);
 void illegal_instruction_int(void);
@@ -35,7 +39,7 @@ static int as=0,s=0,s1=0,s2=0;
 static int start=0;
 
 int main(void) {
-  int i,j;
+  int j;
   char rxchar;
 
   // Initialize all interrrupt vectors to default_int()
@@ -80,11 +84,10 @@ int main(void) {
 
   while(1) {
 
-    printf("%x %x %x %x %x ",
-      line_chan(0),line_chan(1),line_chan(2),line_chan(3),line_chan(4));
+    printf("%x %x %x %x %x ", line_chan(0),line_chan(1),line_chan(2),line_chan(3),line_chan(4));
     //printf("%x %x %x %x ",
     //  dist_get(0),dist_get(1),dist_get(2),(int)(*(unsigned char*)0xfffa13&0x80));
-    printf("%x %lx %lx ",
+    printf("%x %x %x ",
        nav_get_ang(),nav_get_pos(0),nav_get_pos(1));
     /*
     printf("%x %lx %lx %lx %lx %lx %lx\n %x\r",
@@ -166,7 +169,7 @@ void hz100_handler(void) {
     default:
       break;
   }
-  hz10_step = hz10_step & !(1<<(frame%10));
+  hz10_step = hz10_step & ~(1<<(frame%10));
 
 }
 

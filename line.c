@@ -1,6 +1,7 @@
 
 #include "line.h"
 #include "a2d.h"
+#include "nav.h"
 #include "stddef.h"
 
 static int angerr=0;
@@ -32,7 +33,7 @@ int line_chan(int chan) {
 }
 
 int line_ang_err(void) {
-  int i,j;
+  int i;
   int linechan[5];
   int temp;
   int linemax=0x8;

@@ -9,7 +9,6 @@ int printf(const char *format, ...) {
   int i=0;
   char c,*c_p;
   int  j;
-  long int lj;
   va_list argp;
   int  longflag;
 
@@ -25,11 +24,11 @@ int printf(const char *format, ...) {
 	}
 	switch(format[i]) {
 	  case 'c':
-            c = va_arg(argp, char);
+            c = (char)va_arg(argp, int);
             while(!tx_byte(c));
 	    break;
 	  case 's':
-            c_p = va_arg(argp, char*);
+            c_p = (char*)va_arg(argp, int);
             while(*c_p != '\0') {
 	      while(!tx_byte(*c_p));
 	      c_p++;
@@ -53,7 +52,7 @@ int printf(const char *format, ...) {
             while(!tx_byte('?'));
 	    break;
 	  default:
-            va_arg(argp, void*);
+            va_arg(argp, int);
             while(!tx_byte('?'));
 	    break;
 	}
@@ -64,4 +63,5 @@ int printf(const char *format, ...) {
     } 
     i++;
   }
+  return 0;
 }

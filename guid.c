@@ -2,8 +2,11 @@
 #include "stddef.h"
 #include "guid.h"
 #include "nav.h"
+#include "navutil.h"
 #include "waypoint.h"
 #include "fireplan.h"
+#include "pwm.h"
+#include "flame.h"
 
 static int origin_way_point = 0;
 static int target_way_point = 0;
@@ -37,6 +40,8 @@ int guid_init(void) {
   ftmr = 0;
   scanmode = 0;
   dio_init(0,0);
+
+  return 0;
 }
 
 int guid_update(void) {
@@ -124,6 +129,8 @@ int guid_update(void) {
       target_cord[1] = way_points[target_way_point].cord[1];
     }
   }
+
+  return 0;
 }
 
 int guid_get_pos(int axis) {

@@ -10,6 +10,8 @@ int dist_init(void) {
 
   *(char*)(0xfffa15) = 0x55;
   *(char*)(0xfffa13) = 0x55;
+
+  return 0;
 }
 
 int dist_start(void) {
@@ -29,6 +31,7 @@ int dist_ready(void) {
   } else {
     return 0;
   }
+  return 0;
 }
 
 int dist_read(void) {

@@ -7,6 +7,7 @@
 #include "fqd.h"
 #include "nav.h"
 #include "navtbl.h"
+#include "navutil.h"
 #include "stddef.h"
 
 static int ang      = 0;
@@ -14,8 +15,8 @@ static int pos[2]   = {0,0};
 static int vel      = 0;
 static int ang_rate = 0;
 static short int count_old[2];
-static rotcnt       = 1;
-static n[2]         = {0,0};
+static int rotcnt       = 1;
+static int n[2]         = {0,0};
 
 void navint(void);
 
@@ -69,6 +70,8 @@ int nav_update(void) {
   ang_rate += ((delta[0]*lres-delta[1]*rres) - ang_rate)/3;
   n[0] = delta[0];
   n[1] = delta[1];
+
+  return 0;
 }
 
 int nav_get_pos(int axis) {

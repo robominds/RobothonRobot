@@ -1,6 +1,8 @@
 
 #include "mssndef.h"
 #include "draw.h"
+#include "nav.h"
+#include "pwm.h"
 #include "stddef.h"
 
 static int sweep = 0;

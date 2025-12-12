@@ -9,3 +9,4 @@ int nav_get_ipi(void);
 int nav_get_n(int chan);
 int nav_get_rotcnt(void);
 int nav_set_pos(int,int);
+int nav_ang_err(int ang1, int ang2);

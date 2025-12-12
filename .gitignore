@@ -1,2 +1,5 @@
 build
 .DS_Store
+bmbinary
+bmbinary.rom
+bmbinary.srec

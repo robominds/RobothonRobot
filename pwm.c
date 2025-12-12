@@ -34,6 +34,8 @@ int pwm_update(int chan, int on, int off) {
   } else {
     (*(short int *)(TPU_RAM + chan*16 + 6)) = on*2+1;
   }
+
+  return 0;
 }
 
 int dio_init(int chan, int state) {

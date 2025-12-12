@@ -15,7 +15,7 @@
 #
 #   SRCS=main.c user.c \
 #        driver.s
-SRCS=rob.c scibuff.c fqd.c pwm.c tpu.c nav.c navutil.c cntr.c guid.c mzguid.c dist.c line.c draw.c a2d.c flame.c
+SRCS=rob.c scibuff.c fqd.c pwm.c tpu.c nav.c navutil.c cntr.c guid.c mzguid.c dist.c line.c draw.c a2d.c flame.c stdio.c exit.c
 
 # Specify the CPU type that you are targeting your build towards.
 #
@@ -30,7 +30,8 @@ CPU=cpu32
 # your system. m68k-linux-gnu for Linux installations, m68k-eabi-elf if gcc was
 # built from scratch e.g. on a Mac by running the build script.
 # PREFIX=m68k-linux-gnu
-PREFIX=m68k-eabi-elf
+#PREFIX=m68k-eabi-elf
+PREFIX=m68k-elf
 
 # Dont modify below this line (unless you know what youre doing).
 BUILDDIR=build
@@ -85,8 +86,8 @@ crt0x.o: crt0x.s
 
 all: bmbinary rom
 
-crt: crt0x.s
-	$(CC) $(CFLAGS) -c -o crt0x.s.o crt0x.s
+crt: crt0x.S
+	$(CC) $(CFLAGS) -c -o crt0x.S.o crt0x.S
 	rm -f crt0x.d
 
 clean:

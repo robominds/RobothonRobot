@@ -3,6 +3,10 @@
 #include "stddef.h"
 #include "pwm.h"
 #include "nav.h"
+#include "guid.h"
+#include "mzguid.h"
+#include "line.h"
+#include "draw.h"
 #include "cntr.h"
 
 #define PWMFRQ 240
@@ -13,13 +17,13 @@ int cntr_init(void) {
   pwm_init(5,PWMFRQ,PWMFRQ);
   dio_init(4,1);
   dio_init(6,1);
+  return 0;
 }
 
 int cntr_update(void) {
-  int i;
   int pwmpos;
   int pwmang;
-  int velcmd=100,ang_rate=0;
+  int velcmd=100;
   int dx,dy;
   int headingcmd;
   int headingerr;
@@ -59,7 +63,7 @@ int cntr_update(void) {
     pwmpos = -(60*signzero(velcmd)+velcmd+(velcmd-nav_get_vel())*5);
   } 
   if(mssndraw) {
-    headingerr = nav_ang_err(draw_get_headingcmd()-nav_get_ang());
+    headingerr = nav_ang_err(draw_get_headingcmd(),nav_get_ang());
     velcmd = draw_get_velcmd();
     pwmang = abslim(150,headingerr)*4-3*nav_get_ang_rate()/1;
     pwmpos = -(0*signzero(velcmd)+velcmd+(velcmd-nav_get_vel())*5);
@@ -83,4 +87,6 @@ int cntr_update(void) {
   pwm_update(5,PWMFRQ+pwmright,PWMFRQ-pwmright);
   //pwm_update(3,PWMFRQ-pwmpos+pwmang,PWMFRQ+pwmpos-pwmang);
   //pwm_update(5,PWMFRQ+pwmpos+pwmang,PWMFRQ-pwmpos-pwmang);
+
+  return 0;
 }
