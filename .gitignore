@@ -1,5 +1,21 @@
-build
-.DS_Store
+# Build artifacts
+build/
 bmbinary
 bmbinary.rom
 bmbinary.srec
+crt0x.o
+*.o
+*.d
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Debug files
+*.elf
+*.lst
+*.map
