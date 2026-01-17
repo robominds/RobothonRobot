@@ -1,4 +1,4 @@
-STARTUP(crt0x.o)
+STARTUP(build/crt0x.s.o)
 OUTPUT_ARCH(m68k)
 /* Uncomment this if you want srecords. This is needed for a.out
  * if you plan to use GDB.

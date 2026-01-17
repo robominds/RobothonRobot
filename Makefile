@@ -54,17 +54,6 @@ vpath %.S $(ASMDIR)
 
 all: bmbinary rom
 
-# ==============================================================================
-# Build Targets
-# ==============================================================================
-.PHONY: all release clean rom dump dumps hexdump
-
-all: bmbinary rom
-
-# Main binary target
-bmbinary: $(OBJS) crt0x.o
-	$(LD) -o $@ $(OBJS) $(LFLAGS)
-
 # Release build with optimizations
 release: CFLAGS += -DNDEBUG
 release: all
@@ -95,17 +84,20 @@ $(BUILDDIR)/%.s.o: %.s
 # Include dependency files
 -include $(DEPS)
 
-# Build startup code (crt0x.o must be in root for linker script)
-crt0x.o: $(ASMDIR)/crt0x.s
+# Build startup code in build directory
+$(BUILDDIR)/crt0x.s.o: $(ASMDIR)/crt0x.s
 	mkdir -p $(BUILDDIR)
-	$(CC) $(CFLAGS) -x assembler-with-cpp -c -o $(BUILDDIR)/crt0x.s.o $<
-	cp $(BUILDDIR)/crt0x.s.o $@
+	$(CC) $(CFLAGS) -x assembler-with-cpp -c -o $@ $<
+
+# Main binary depends on startup code
+bmbinary: $(OBJS) $(BUILDDIR)/crt0x.s.o
+	$(LD) -o $@ $(OBJS) $(LFLAGS)
 
 # ==============================================================================
 # Utility Targets
 # ==============================================================================
 
-# Clean build artifacts
+# Clean build ar
 clean:
 	rm -rf $(BUILDDIR)/*
 	rm -f bmbinary* crt0x.o

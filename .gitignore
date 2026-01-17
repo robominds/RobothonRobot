@@ -3,9 +3,6 @@ build/
 bmbinary
 bmbinary.rom
 bmbinary.srec
-crt0x.o
-*.o
-*.d
 
 # Editor files
 .vscode/
