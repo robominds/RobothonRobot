@@ -57,6 +57,15 @@ make hexdump
 
 ## Project Structure
 
+### Directory Layout
+```
+src/          - C source files
+include/      - Header files
+asm/          - Assembly source files
+unused/       - Historical/unused files
+build/        - Build artifacts (generated)
+```
+
 ### Core Modules
 - `rob.c` - Main robot control loop
 - `nav.c`, `navutil.c` - Navigation system
@@ -78,8 +87,8 @@ make hexdump
 - `cntr.c` - Counter utilities
 
 ### Startup & System
-- `crt0x.s` - C runtime startup code
-- `scibuff.s` - Serial interrupt handlers
+- `asm/crt0x.s` - C runtime startup code
+- `asm/scibuff.s` - Serial interrupt handlers
 - `platform.ld` - Linker script
 - `332.ld` - Memory layout
 

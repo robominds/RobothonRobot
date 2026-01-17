@@ -3,6 +3,11 @@
 # Target: 68332 CPU (cpu32 architecture)
 # ==============================================================================
 
+# Directory structure
+SRCDIR   = src
+INCDIR   = include
+ASMDIR   = asm
+
 # Source files to compile into the binary
 SRCS = rob.c scibuff.c fqd.c pwm.c tpu.c nav.c navutil.c cntr.c guid.c \
        mzguid.c dist.c line.c draw.c a2d.c flame.c stdio.c exit.c
@@ -26,7 +31,7 @@ OBJCOPY = $(PREFIX)-objcopy
 OBJDUMP = $(PREFIX)-objdump
 
 # Compiler flags
-CFLAGS = -m$(CPU) -Wall -Wextra -g -static -I../include -I. -msoft-float -MMD -MP -O
+CFLAGS = -m$(CPU) -Wall -Wextra -g -static -I$(INCDIR) -I../include -msoft-float -MMD -MP -O
 
 # Linker flags
 LFLAGS = --script=platform.ld
@@ -36,6 +41,11 @@ OBJS  = $(patsubst %.c,$(BUILDDIR)/%.c.o,$(SRCS))
 OBJS := $(patsubst %.S,$(BUILDDIR)/%.S.o,$(OBJS))
 OBJS := $(patsubst %.s,$(BUILDDIR)/%.s.o,$(OBJS))
 DEPS  = $(OBJS:.o=.d)
+
+# Add source directory to VPATH for automatic source file lookup
+vpath %.c $(SRCDIR)
+vpath %.s $(ASMDIR)
+vpath %.S $(ASMDIR)
 
 # ==============================================================================
 # Build Targets
@@ -86,9 +96,9 @@ $(BUILDDIR)/%.s.o: %.s
 -include $(DEPS)
 
 # Build startup code (crt0x.o must be in root for linker script)
-crt0x.o: crt0x.s
+crt0x.o: $(ASMDIR)/crt0x.s
 	mkdir -p $(BUILDDIR)
-	$(CC) $(CFLAGS) -x assembler-with-cpp -c -o $(BUILDDIR)/crt0x.s.o crt0x.s
+	$(CC) $(CFLAGS) -x assembler-with-cpp -c -o $(BUILDDIR)/crt0x.s.o $<
 	cp $(BUILDDIR)/crt0x.s.o $@
 
 # ==============================================================================
